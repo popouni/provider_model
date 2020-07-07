@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
                       //ここでなにかする
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BookList()),
+                        MaterialPageRoute(builder: (context) => BookListPage()),
                       );
                     },
                   ),
