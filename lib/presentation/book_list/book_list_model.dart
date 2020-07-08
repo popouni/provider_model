@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider_model/book.dart';
+import 'package:provider_model/domain/book.dart';
 
 class BookListModel extends ChangeNotifier {
   List<Book> books = [];
