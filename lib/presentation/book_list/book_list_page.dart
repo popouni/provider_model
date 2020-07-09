@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_model/add_book/add_book_page.dart';
+import 'package:provider_model/domain/book.dart';
 import 'package:provider_model/presentation/book_list/book_list_model.dart';
 
 class BookListPage extends StatelessWidget {
@@ -34,6 +35,28 @@ class BookListPage extends StatelessWidget {
                       model.fetchBooks();
                     },
                   ),
+                  onLongPress: () async {
+                    // todo:
+                    await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('${book.title}削除しましすか？'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('OK'),
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+
+                                //todo: 削除のAPIを叩く
+                                await deleteBook(context, model, book);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
               )
               .toList();
@@ -59,6 +82,42 @@ class BookListPage extends StatelessWidget {
           );
         }),
       ),
+    );
+  }
+
+  Future deleteBook(
+    BuildContext context,
+    BookListModel model,
+    Book book,
+  ) async {
+    try {
+      await model.deleteBook(book);
+      await model.fetchBooks();
+    } catch (e) {
+      await _showDialog(context, e.toString());
+      print(e.toString());
+    }
+  }
+
+  Future _showDialog(
+    BuildContext context,
+    String title,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext content) {
+        return AlertDialog(
+          title: Text(title),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
